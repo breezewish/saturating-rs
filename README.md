@@ -1,5 +1,7 @@
 # saturating-rs
 
+[![Build Status](https://travis-ci.org/breeswish/saturating-rs.svg?branch=master)](https://travis-ci.org/breeswish/saturating-rs)
+
 `Saturating<T>` is an intentionally-saturating arithmetic wrapper, similar to [`std::num::Wrapping`](https://doc.rust-lang.org/std/num/struct.Wrapping.html).
 
 ## Examples
