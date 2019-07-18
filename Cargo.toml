@@ -1,0 +1,9 @@
+[package]
+name = "saturating"
+version = "0.1.0"
+authors = ["Breezewish <me@breeswish.org>"]
+edition = "2018"
+description = "Provides Saturating<T>, an intentionally-saturating arithmetic wrapper."
+repository = "https://github.com/breeswish/saturating-rs"
+keywords = ["numerics", "mathematics"]
+categories = ["no-std"]
