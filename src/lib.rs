@@ -15,6 +15,7 @@
 #![no_std]
 
 use core::fmt;
+use core::iter;
 use core::ops::*;
 
 /// Provides intentionally-saturating arithmetic on `T`.
@@ -73,7 +74,7 @@ macro_rules! forward_ref_unop {
                 $imp::$method(*self)
             }
         }
-    }
+    };
 }
 
 // implements binary operators "&T op U", "T op &U", "&T op &U"
@@ -106,7 +107,7 @@ macro_rules! forward_ref_binop {
                 $imp::$method(*self, *other)
             }
         }
-    }
+    };
 }
 
 // implements "T op= &U", based on "T op= U"
@@ -119,7 +120,7 @@ macro_rules! forward_ref_op_assign {
                 $imp::$method(self, *other);
             }
         }
-    }
+    };
 }
 
 macro_rules! saturating_impl {
@@ -187,6 +188,29 @@ macro_rules! saturating_impl {
         }
         forward_ref_unop! { impl Neg, neg for Saturating<$t> }
 
+        impl iter::Sum for Saturating<$t> {
+            fn sum<I: Iterator<Item = Self>>(iter: I) -> Self {
+                iter.fold(Saturating(0), Add::add)
+            }
+        }
+
+        impl<'a> iter::Sum<&'a Saturating<$t>> for Saturating<$t> {
+            fn sum<I: Iterator<Item = &'a Self>>(iter: I) -> Self {
+                iter.fold(Saturating(0), Add::add)
+            }
+        }
+
+        impl iter::Product for Saturating<$t> {
+            fn product<I: Iterator<Item = Self>>(iter: I) -> Self {
+                iter.fold(Saturating(1), Mul::mul)
+            }
+        }
+
+        impl<'a> iter::Product<&'a Saturating<$t>> for Saturating<$t> {
+            fn product<I: Iterator<Item = &'a Self>>(iter: I) -> Self {
+                iter.fold(Saturating(1), Mul::mul)
+            }
+        }
     )*)
 }
 
